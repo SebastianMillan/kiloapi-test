@@ -43,5 +43,7 @@ class ClaseRepositoryTest {
     @Test
     @Disabled
     void findClasesOrderedByRank() {
+
+
     }
 }
