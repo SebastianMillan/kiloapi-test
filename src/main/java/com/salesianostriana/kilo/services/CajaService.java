@@ -147,7 +147,6 @@ public class CajaService {
 
             Tiene t = tieneRepository.findOneTiene(caja.getId(), idALim);
 
-
             if (caja.getAlimentos().contains(t)) {
 
                 caja.getAlimentos().stream().forEach( al -> {
