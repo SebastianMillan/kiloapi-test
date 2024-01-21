@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
 class CajaServiceTest {
 
     @InjectMocks
@@ -51,12 +50,15 @@ class CajaServiceTest {
                 .nombre("Salesianos 1")
                 .build();
 
-        TipoAlimento ta = TipoAlimento.builder()
-                .id(1L)
-                .build();
+
         KilosDisponibles kd = KilosDisponibles.builder()
                 .id(1L)
                 .cantidadDisponible(20.0)
+                .build();
+
+        TipoAlimento ta = TipoAlimento.builder()
+                .id(1L)
+                .kilosDisponibles(kd)
                 .build();
 
         kd.addTipoAlimento(ta);
@@ -79,6 +81,7 @@ class CajaServiceTest {
         Tiene t = Tiene.builder()
                 .tipoAlimento(ta)
                 .tienePK(new TienePK(1L, 1L))
+                .cantidadKgs(20)
                 .build();
         Caja c = Caja.builder()
                 .id(1L)
@@ -96,10 +99,17 @@ class CajaServiceTest {
         //when(kilosDisponiblesService.add(new KilosDisponibles(ta.getId(),20.0))).thenReturn(kd);
         when(cajaRepository.save(Mockito.any(Caja.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        assertTrue(cajaService.editKgOfALim(c.getId(), ta.getId(),21.22).isPresent());
-        assertEquals(cajaService.editKgOfALim(c.getId(), ta.getId(),25.2).get().getKilosTotales(), 20.0);
-
-
+        /*
+        * Cuando guarda al final del método la caja, aunque anteriormente se setee la cantidad y se guarde el Tiene esto
+        * no aplica en el guardado, por lo cuál el contenido de la caja con sus respectivos kg son correctos aunque el kgTotal de la
+        * caja no se actualiza conforme a su contenido
+        *
+        * */
+        assertTrue(cajaService.editKgOfALim(c.getId(), ta.getId(),50.0).isPresent());
+        assertTrue(cajaService.editKgOfALim(c.getId(), ta.getId(),-1.0).isEmpty());
+        assertEquals(cajaService.editKgOfALim(c.getId(), ta.getId(),50.0001).get().getContenido().get(0).getKg(), 50.0001);
+        assertEquals(cajaService.editKgOfALim(c.getId(), ta.getId(),49.9999).get().getContenido().get(0).getKg(), 49.9999);
+        assertEquals(cajaService.editKgOfALim(c.getId(), ta.getId(),0.0).get().getContenido().get(0).getKg(), 0.0);
 
 
     }

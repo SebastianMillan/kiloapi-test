@@ -1,6 +1,8 @@
 package com.salesianostriana.kilo.repositories;
 
 import org.junit.jupiter.api.Disabled;
+import com.salesianostriana.kilo.dtos.ranking.RankQueryResponseDTO;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -12,14 +14,17 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import org.testcontainers.utility.DockerImageName;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED)
 @ActiveProfiles({"postgresql"})
 @Testcontainers
-@Sql(value = "classpath:import-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+//@Sql(value = "classpath:import-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+//@Sql(value = "classpath:delete-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class ClaseRepositoryTest {
 
     @Autowired
@@ -41,9 +46,8 @@ class ClaseRepositoryTest {
     }
 
     @Test
-    @Disabled
     void findClasesOrderedByRank() {
-
-
+        List<RankQueryResponseDTO> result= claseRepository.findClasesOrderedByRank();
+        assertEquals(result.size(),12);
     }
 }
