@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles({"postgresql"})
 @Testcontainers
-@Sql(value = "classpath:import-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = "classpath:delete-pet.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+//@Sql(value = "classpath:import-test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+//@Sql(value = "classpath:delete-test.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class ClaseRepositoryTest {
 
     @Autowired
